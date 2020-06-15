@@ -1,0 +1,7 @@
+name = "Yama"
+uuid = "0ddc8939-a2fe-437b-a050-556732161e55"
+authors = ["Anton Smirnov"]
+version = "0.1.0"
+
+[compat]
+julia = "1.4"
