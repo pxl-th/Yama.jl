@@ -2,7 +2,7 @@
 CurrentModule = Yama
 ```
 
-# Yama
+# Yama 山
 
 Visualize loss landscape.
 
