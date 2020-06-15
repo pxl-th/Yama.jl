@@ -8,9 +8,9 @@ Visualize loss landscape.
 
 ```@raw html
 <p align="center">
-  <img src="../../res/mnist.png" width=250>
-  <img src="../../res/mnist-log.png" width=250>
-  <img src="../../res/custom.png" width=250>
+  <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/mnist.png" width=250>
+  <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/mnist-log.png" width=250>
+  <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/custom.png" width=250>
 </p>
 ```
 
