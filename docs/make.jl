@@ -12,10 +12,8 @@ makedocs(;
         assets=String[],
     ),
     pages=[
-        "Home" => "index.md",
+        "index.md",
+        "User API" => "docs.md",
     ],
 )
-
-deploydocs(;
-    repo="github.com/pxl-th/Yama.jl",
-)
+deploydocs(repo="github.com/pxl-th/Yama.jl")

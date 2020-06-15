@@ -10,7 +10,7 @@
     batch_size::Int32 = 64
     use_gpu::Bool = true
 
-    model_file::String
+    model_file::String = nothing
     save_file::String
 end
 
@@ -26,6 +26,27 @@ function evaluation_loop(
     total_loss / total
 end
 
+"""
+```
+function create_surface(
+    model, dataloader::DataLoader, evaluation_step, args::SurfaceArgs,
+)
+```
+
+Create loss surface.
+
+# Parameters
+- `model`: Model to use in loss function.
+- `dataloader::DataLoader`: Dataset on which to evaluate loss function.
+- `evaluation_step`:
+    Custom-defined function which given model, mini-batch and args,
+    computes loss on that mini-batch.
+- `args::SurfaceArgs`: Parameters used when computing surface.
+
+!!! note
+    If you specified `use_gpu` in `args`, then it is up to you,
+    to transfer mini-batch in `evaluation_step` function to gpu.
+"""
 function create_surface(
     model, dataloader::DataLoader, evaluation_step, args::SurfaceArgs,
 )

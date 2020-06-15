@@ -38,7 +38,7 @@ function build_model()
     Chain(Dense(28 * 28, 10))
 end
 
-function evaluation_step(model, batch, args)
+function evaluation_step(model, batch, args::SurfaceArgs)
     x, y = make_minibatch(batch...)
     x = flatten(x)
     if args.use_gpu

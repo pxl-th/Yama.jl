@@ -1,7 +1,8 @@
 # Yama 山
 
-[![Build Status](https://github.com/pxl-th/lviz.jl/workflows/CI/badge.svg)](https://github.com/pxl-th/lviz.jl/actions)
-[![Coverage](https://codecov.io/gh/pxl-th/lviz.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/pxl-th/lviz.jl)
+[![Build Status](https://github.com/pxl-th/Yama.jl/workflows/CI/badge.svg)](https://github.com/pxl-th/Yama.jl/actions)
+[![Coverage](https://codecov.io/gh/pxl-th/Yama.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/pxl-th/Yama.jl)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://pxl-th.github.io/Yama.jl/dev/)
 
 Visualize loss surface in 3D.
 
@@ -14,4 +15,4 @@ Visualize loss surface in 3D.
 ## References
 
 - [Hao Li et.al. "Visualizing the Loss Landscape of Neural Nets"](https://arxiv.org/abs/1712.09913)
-- [Original code](https://github.com/tomgoldstein/loss-landscape)
+- [Original code in Python](https://github.com/tomgoldstein/loss-landscape)
