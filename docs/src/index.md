@@ -4,15 +4,36 @@ CurrentModule = Yama
 
 # Yama 山
 
-Visualize loss landscape.
+[GitHub](https://github.com/pxl-th/Yama.jl)
+
+Visualize loss landscape in 3D.
 
 ```@raw html
 <p align="center">
   <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/mnist.png" width=250>
   <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/mnist-log.png" width=250>
-  <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/custom.png" width=250>
+  <img src="https://raw.githubusercontent.com/pxl-th/Yama.jl/master/res/mnist-two-checkpoints.png" width=250>
 </p>
 ```
+
+## Loss surface configurations
+
+- Create surface in random directions around current model parameters.
+- Create surface between model checkpoints both in x- and y-directions.
+  In this case you have to provide `x_directions_file` and\or `y_directions_file`
+  containing those directions.
+  Both of them should match in shape with model's weights.
+
+!!! note
+    In case when creating surface between model checkpoints, both
+    x- and y- directions files in `SurfaceArgs` should contain directions
+    under `directions_weights` key.
+
+    Saving weights like this in code would look like
+    `BSON.@save file direction_weights`.
+
+Visit [examples](https://github.com/pxl-th/Yama.jl/tree/master/examples)
+for complete examples, but below is a short guide.
 
 ## MNIST Example
 

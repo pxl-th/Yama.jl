@@ -20,10 +20,14 @@ function normalize_directions!(directions::Params, weights::Params)
     end
 end
 
-function create_random_directions(weights::Params)::Params
+function create_directions(weights::Params)::Params
     directions = get_random_weights(weights)
     normalize_directions!(directions, weights)
     directions
+end
+
+function create_directions(weights1::Params, weights2::Params)::Params
+    params([w2 - w1 for (w1, w2) in zip(weights1, weights2)])
 end
 
 function shift_weights(
