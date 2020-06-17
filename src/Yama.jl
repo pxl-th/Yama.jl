@@ -1,5 +1,5 @@
 module Yama
-export create_surface, SurfaceArgs
+export create_surface, SurfaceArgs, pca_directions, trajectory
 
 using Base.Iterators: product
 using BSON: @save, @load
@@ -7,7 +7,8 @@ using BSON: @save, @load
 using CuArrays
 using Flux: params, gradient, gpu, cpu, loadparams!, testmode!
 using Flux.Data: DataLoader
-using LinearAlgebra: norm
+using LinearAlgebra: norm, dot
+using MultivariateStats: PCA, fit, projection, mean, principalvars, tresidualvar, principalratio
 
 using Parameters: @with_kw
 using ProgressMeter: @showprogress
@@ -15,5 +16,6 @@ using Zygote: Params
 
 include("utils.jl")
 include("surface.jl")
+include("trajectory.jl")
 
 end

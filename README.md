@@ -11,6 +11,13 @@ Visualize loss surface in 3D.
   <img src="res/mnist-two-checkpoints.png" width=300>
 </p>
 
+Visualize path that optimizer took during training.
+
+<p align="center">
+  <img src="res/optimizer-path-cnn-mnist-log.png" width=300>
+  <img src="res/optimizer-path-cnn-mnist-log-2d.png" width=300>
+</p>
+
 ## References
 
 - [Hao Li et.al. "Visualizing the Loss Landscape of Neural Nets"](https://arxiv.org/abs/1712.09913)

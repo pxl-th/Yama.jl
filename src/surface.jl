@@ -21,10 +21,10 @@ Should match in shape with model's weights.
 
 !!! note
     Both x- and y- directions files in should contain directions
-    under `directions_weights` key.
+    under `checkpoint_weights` key.
 
     Saving weights like this in code would look like
-    `BSON.@save file direction_weights`.
+    `BSON.@save file checkpoint_weights`.
 """
 @with_kw struct SurfaceArgs
     xmin::Float32 = -1
@@ -64,8 +64,8 @@ function get_directions(
 
     @inbounds for (i, (is_target, target_file)) in enumerate(zip(is_targets, directions_files))
         if is_target
-            @load target_file directions_weights
-            i_directions = create_directions(model_parameters, params(directions_weights))
+            @load target_file checkpoint_weights
+            i_directions = create_directions(model_parameters, params(checkpoint_weights))
         else
             i_directions = create_directions(model_parameters)
         end
