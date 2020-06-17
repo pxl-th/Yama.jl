@@ -14,8 +14,7 @@ Visualize loss surface in 3D.
 Visualize path that optimizer took during training.
 
 <p align="center">
-  <img src="res/optimizer-path-cnn-mnist-log.png" width=300>
-  <img src="res/optimizer-path-cnn-mnist-log-2d.png" width=300>
+  <img src="res/optimizer-path-cnn-mnist-log.png" width=500>
 </p>
 
 ## References
