@@ -4,4 +4,4 @@
 *.bson
 /docs/build/
 *.dll
-**/Manifest.toml
+Manifest.toml

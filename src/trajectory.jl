@@ -67,11 +67,11 @@ during training, for example.
 - `weights::Params`: Target weights of the model. E.g. from last epoch.
 - `checkpoints::Vector{String}`: Checkpoints of the model from previous epochs.
 They will be loaded in sorted order and should contain weights
-under `checpoint_weights` key.
+under `checkpoint_weights` key.
 - `projection::Symbol`: Projection method. Either `:lstsq` or `:cos`.
 
 !!! note
-    Checkpoint files should contain weights under `checpoint_weights` key.
+    Checkpoint files should contain weights under `checkpoint_weights` key.
 """
 function create_trajectory(
     weights::Params, checkpoints::Vector{String}, projection::Symbol = :cos,
