@@ -1,4 +1,4 @@
-using BSON: @save, @load, load
+using BSON: @save, @load
 
 using CuArrays
 using Flux:
@@ -13,7 +13,7 @@ using Printf: @sprintf
 using Parameters: @with_kw
 using Plots
 
-using Yama: create_surface, SurfaceArgs, pca_directions, trajectory
+using Yama: create_surface, SurfaceArgs, create_trajectory
 
 pyplot()
 Plots.PyPlotBackend()
@@ -36,13 +36,6 @@ end
     use_gpu::Bool = true
 end
 
-# function build_model()
-#     Chain(
-#         Dense(28 * 28, 64, σ),
-#         Dense(64, 10), softmax,
-#     )
-# end
-
 function build_model(imgsize = (28, 28, 1))
     Chain(
         Conv((3, 3), 1 => 16, pad=(1, 1), relu), MaxPool((2, 2)),
@@ -55,12 +48,15 @@ end
 
 function evaluation_step(model, batch, args::SurfaceArgs)
     x, y = make_minibatch(batch...)
-    # x = flatten(x)
     if args.use_gpu
-        x = x |> gpu
-        y = y |> gpu
+        x, y = x |> gpu, y |> gpu
     end
     logitcrossentropy(model(x), y)
+end
+
+function save_model(model, path::String)
+    checkpoint_weights = params(model) .|> cpu
+    @save path checkpoint_weights
 end
 
 function train(; kws...)
@@ -75,28 +71,21 @@ function train(; kws...)
 
     optimizer = ADAM(args.lr)
     train_loader = DataLoader(
-        images(), labels(), batchsize=args.batch_size, shuffle=true,
+        images(), labels(), batchsize=args.batch_size, shuffle=false,
     )
     val_loader = DataLoader(
-        images(:test), labels(:test), batchsize=args.batch_size, shuffle=false,
+        images(:test), labels(:test), batchsize=args.batch_size,
     )
 
-    let
-        checkpoint_weights = model_parameters .|> cpu
-        save_file = joinpath(args.save_dir, "checkpoint-epoch=00.bson")
-        @save save_file checkpoint_weights
-    end
+    save_model(model, joinpath(args.save_dir, "checkpoint-epoch=00.bson"))
 
     for epoch in 1:args.epochs
         trainmode!(model)
         for (i, (data, labels)) in enumerate(train_loader)
             x, y = make_minibatch(data, labels)
-            # x = flatten(x)
             if args.use_gpu
-                x = x |> gpu
-                y = y |> gpu
+                x, y = x |> gpu, y |> gpu
             end
-
             gradients = gradient(model_parameters) do
                 logitcrossentropy(model(x), y)
             end
@@ -107,36 +96,35 @@ function train(; kws...)
         validation_loss = 0.0f0
         for (i, (data, labels)) in enumerate(val_loader)
             x, y = make_minibatch(data, labels)
-            # x = flatten(x)
             if args.use_gpu
-                x = x |> gpu
-                y = y |> gpu
+                x, y = x |> gpu, y |> gpu
             end
             validation_loss += logitcrossentropy(model(x), y) |> cpu
         end
         validation_loss = validation_loss / length(val_loader)
         println("Epoch $epoch, Validation loss $(validation_loss)")
 
-        let
-            checkpoint_weights = model_parameters .|> cpu
-            save_file = joinpath(args.save_dir, "checkpoint-epoch=$(@sprintf("%02d", epoch)).bson")
-            @save save_file checkpoint_weights
-        end
+        save_model(
+            model,
+            joinpath(args.save_dir, "checkpoint-epoch=$(@sprintf("%02d", epoch)).bson"),
+        )
     end
 end
 
 function main_surface()
     model = build_model()
-    args = SurfaceArgs(x_directions_file="./cnn-checkpoints/checkpoint-epoch=00.bson")
+    args = SurfaceArgs(
+        batch_size=32,
+        x_directions_file="./cnn-checkpoints/checkpoint-epoch=00.bson",
+    )
     save_file = "./cnn-surface.bson"
     model_file = "./cnn-checkpoints/checkpoint-epoch=10.bson"
-    batch_size = 32
 
     @load model_file checkpoint_weights
     loadparams!(model, checkpoint_weights)
 
     # loader = DataLoader(images(:test), labels(:test), batchsize=batch_size)
-    loader = DataLoader(images(), labels(), batchsize=batch_size)
+    loader = DataLoader(images(), labels(), batchsize=args.batch_size)
     coordinates, loss_surface = create_surface(
         model, loader, evaluation_step, args,
     )
@@ -161,14 +149,11 @@ function main_trajectory()
     @load checkpoint_file checkpoint_weights
     target_weights = params(checkpoint_weights)
 
-    directions = pca_directions(target_weights, checkpoints)
-    positions = trajectory(target_weights, directions, checkpoints)[2:end, :]
+    positions = create_trajectory(target_weights, checkpoints)[2:end, :]
     positions ./= maximum(abs.(positions), dims=1)
 
     surface_file = "./cnn-surface.bson"
     @load surface_file coordinates loss_surface
-    loss_surface = log.(loss_surface)
-    loss_surface[loss_surface .< 0] .= 0
 
     positions_losses = Array{Float32, 2}(undef, 3, size(positions, 1))
     for i in 1:size(positions, 1)

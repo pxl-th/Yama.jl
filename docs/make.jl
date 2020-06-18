@@ -13,6 +13,10 @@ makedocs(;
     ),
     pages=[
         "index.md",
+        "Examples" => [
+            "Surface" => "examples/surface.md",
+            "Trajectory" => "examples/trajectory.md",
+        ],
         "User API" => "docs.md",
     ],
 )

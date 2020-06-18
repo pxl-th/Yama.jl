@@ -1,4 +1,4 @@
-# User API
+# API
 
 ```@autodocs
 Modules = [Yama]

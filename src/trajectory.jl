@@ -40,7 +40,7 @@ end
 
 function trajectory(
     weights::Params, pca_projection::Array{Float32, 2},
-    checkpoints::Vector{String},
+    checkpoints::Vector{String}, projection::Symbol = :cos,
 )::Array{Float32, 2}
     coordinates = zeros(Float32, length(checkpoints), 2)
     @inbounds for (i, checkpoint) in enumerate(checkpoints)
@@ -50,4 +50,32 @@ function trajectory(
         coordinates[i, :] = projection
     end
     coordinates
+end
+
+"""
+```julia
+function create_trajectory(
+    weights::Params, checkpoints::Vector{String}, projection::Symbol = :cos,
+)::Array{Float32, 2}
+```
+
+Create trajectory between model checkpoints.
+This allows for path visualization that optimizer took
+during training, for example.
+
+# Arguments
+- `weights::Params`: Target weights of the model. E.g. from last epoch.
+- `checkpoints::Vector{String}`: Checkpoints of the model from previous epochs.
+They will be loaded in sorted order and should contain weights
+under `checpoint_weights` key.
+- `projection::Symbol`: Projection method. Either `:lstsq` or `:cos`.
+
+!!! note
+    Checkpoint files should contain weights under `checpoint_weights` key.
+"""
+function create_trajectory(
+    weights::Params, checkpoints::Vector{String}, projection::Symbol = :cos,
+)::Array{Float32, 2}
+    directions = pca_directions(weights, checkpoints)
+    trajectory(weights, directions, checkpoints, projection)
 end
