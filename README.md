@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/pxl-th/Yama.jl/workflows/CI/badge.svg)](https://github.com/pxl-th/Yama.jl/actions)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://pxl-th.github.io/Yama.jl/dev/)
 
-Visualizer loss surface in random directions (1st & 2nd picture) or between model checkpoints (3rd picture).
+Visualize loss surface in random directions (1st & 2nd picture) or between model checkpoints (3rd picture).
 
 <p align="center">
   <img src="res/mnist.png" width=300>
